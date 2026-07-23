@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Andhavarapu Vinay Kumar | Creative Developer & Designer</title>
+
+  <!-- GSAP Animation Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    :root {
+      --bg: #050508;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --aura-blue: #3b82f6;
+      --aura-purple: #8b5cf6;
+      --aura-cyan: #06b6d4;
+      --aura-gold: #f59e0b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 0 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Dynamic Glow Cursor */
+    .cursor-aura {
+      position: fixed;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      filter: blur(20px);
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--card-border);
+      opacity: 0;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #fff, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* Sections */
+    section {
+      padding: 5rem 0;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 80vh;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .hero-image-container {
+      width: 100%;
+      max-width: 360px;
+      height: 460px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transform: scale(0.9);
+      justify-self: center;
+    }
+
+    .hero-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    
+    .hero-image-container:hover img {
+      transform: scale(1.05);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #c084fc;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      letter-spacing: -1.5px;
+      opacity: 0;
+    }
+
+    .aura-gradient-text {
+      background: linear-gradient(135deg, var(--aura-cyan), var(--aura-blue), var(--aura-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin-bottom: 2rem;
+      opacity: 0;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      opacity: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-pill {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 0.8rem 1.2rem;
+      border-radius: 30px;
+    }
+
+    /* Section Header */
+    .section-header {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+    
+    .section-subheader {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Grid & Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.4s ease, transform 0.4s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .card:hover {
+      border-color: var(--aura-purple);
+      transform: translateY(-5px);
+    }
+
+    .card-icon {
+      color: var(--aura-cyan);
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    
+    /* IMU Acheivement Section */
+    .imu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .imu-award-card {
+      background: radial-gradient(circle at top left, rgba(245, 158, 11, 0.1), transparent 50%), var(--card-bg);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      box-shadow: 0 4px 15px -3px rgba(245, 158, 11, 0.1);
+    }
+    
+    .imu-award-card:hover {
+      border-color: var(--aura-gold);
+    }
+    
+    .imu-award-icon {
+      color: var(--aura-gold);
+    }
+
+    /* Story Section */
+    .story {
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(139, 92, 246, 0.03) 50%, var(--bg) 100%);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 6rem 0;
+    }
+    
+    .story-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .story-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      letter-spacing: -0.5px;
+    }
+    
+    .story p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    
+    .story p strong {
+      color: var(--text);
+    }
+
+    /* Socials Links Grid */
+    .socials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      opacity: 0;
+    }
+
+    .social-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--aura-blue);
+      transform: translateY(-3px);
+    }
+
+    /* Contact Bar */
+    .contact-container {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(139, 92, 246, 0.05) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      margin-top: 2rem;
+      text-align: center;
+      opacity: 0;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .contact-item:hover {
+      color: var(--aura-cyan);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 4rem;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-image-container { margin-bottom: 2rem; }
+      .hero-content { align-items: center; }
+      .hero-title { font-size: 2.8rem; }
+      .btn-group { flex-direction: column; }
+      .story { padding: 4rem 0; }
+      .imu-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 1rem; align-items: flex-start; }
+      .nav-links a { margin-left: 0; margin-right: 1.5rem; }
+      .contact-links { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Aura Glow Pointer -->
+  <div class="cursor-aura" id="aura"></div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="logo">VINAY KUMAR</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#profiles">Profiles</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="about">
+    <div class="hero-content">
+      <div class="badge" id="heroBadge">
+        <i data-lucide="sparkles" style="width: 14px;"></i> 3rd Year B.Tech Student @ VVITU Guntur
+      </div>
+      <h1 class="hero-title" id="heroTitle">
+        Andhavarapu Vinay Kumar.<br>
+        <span class="aura-gradient-text">Unmatched Aura & Design.</span>
+      </h1>
+      <p class="hero-sub" id="heroSub">
+        A web developer, app & website designer, and creative image editor focused on building modern, high-impact digital experiences.
+      </p>
+      <div class="btn-group" id="heroBtn">
+        <a href="#contact" class="btn">
+          Contact Me <i data-lucide="arrow-right" style="width: 18px;"></i>
+        </a>
+        <div class="lang-pill">
+          🌐 Speaks: <strong>Telugu & English</strong>
+        </div>
+      </div>
+    </div>
+    
+    <div class="hero-image-container" id="heroImage">
+      <!-- Embedded image directly so it works instantly without external file paths -->
+      <img src="vinayy.jpeg" alt="Andhavarapu Vinay Kumar" id="userPhoto" />
+    </div>
+  </section>
+  
+  <!-- IMU Achievements Section -->
+  <section id="achievements">
+    <h2 class="section-header">Academic Excellence</h2>
+    <p class="section-subheader">A summary of milestones achieved during my journey at IMU.</p>
+    
+    <div class="imu-grid">
+      <div class="card imu-award-card">
+        <i data-lucide="medal" class="card-icon imu-award-icon"></i>
+        <h3>Distinction Rank Holder</h3>
+        <p>Recognized for consistently maintaining a top-tier academic standard, achieving honors among my peers in the degree program.</p>
+      </div>
+      
+      <div class="card">
+        <i data-lucide="book-open-check" class="card-icon"></i>
+        <h3>Curriculum Mastery</h3>
+        <p>Successfully completed specialized course modules at IMU, laying the foundational knowledge for my current carrier in technology and design.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills">
+    <h2 class="section-header">Core Competencies</h2>
+    <p class="section-subheader">Crafting digital solutions from concept to creation.</p>
+    <div class="grid">
+      <div class="card">
+        <i data-lucide="code-2" class="card-icon"></i>
+        <h3>Web Development</h3>
+        <p>Building clean, high-performance, responsive websites using modern frontend technologies and clean architectures.</p>
+      </div>
+
+      <div class="card">
+        <i data-lucide="layout" class="card-icon"></i>
+        <h3>App & Web Design</h3>
+        <p>Creating intuitive, high-converting user interfaces (UI/UX) tailored for dynamic web apps and modern mobile products.</p>
+      </div>
+
+      <div class="card">
+        <i data-lucide="image" class="card-icon"></i>
+        <h3>Creative Image Modification</h3>
+        <p>Transforming concepts into unique graphic assets and manipulating imagery with creative flair and precision.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Journey Section -->
+  <section class="story">
+    <div class="story-content" id="storyContent">
+      <h2 class="story-title">The Blueprint of Aura</h2>
+      
+      <p>My journey in technology began with a strong foundation built during my time at <strong>IMU (International Maritime University)</strong>. It was there I discovered that complexity can be made elegant, and that discipline is the key to mastering any skill. My academic achievement at IMU gave me the analytical mind I use today.</p>
+      
+      <p>Now, as a <strong>3rd-year B.Tech student at VVITU Guntur</strong>, I have translated that discipline into the world of pixels and code. I don't just build websites; I design experiences with an "aura"—a unique digital energy that is unmatched. My transition from standard academic pursuit to the bleeding edge of design and development was fueled by a desire to create things that are both functional and beautiful.</p>
+      
+      <p>I specialize in <strong>Web Development</strong>, where I transform ideas into live, interactive products. As a <strong>designer of both apps and websites</strong>, I bridge the gap between user intuition and visual appeal. My creative image modification skill allows me to craft visuals that capture attention instantly. This combination of skills makes my carrier unique.</p>
+      
+      <p>My goal is simple: to make every project a masterpiece. Let's build the future together.</p>
+    </div>
+  </section>
+  
+  <!-- Developer Profiles Section -->
+  <section id="profiles">
+    <h2 class="section-header">Connect Across Platforms</h2>
+    <div class="socials-grid">
+      
+      <!-- LinkedIn Profile -->
+      <a href="https://www.linkedin.com/in/vinay-vinu-a13914423/" target="_blank" rel="noopener noreferrer" class="social-card">
+        <i data-lucide="linkedin" style="color: #0a66c2;"></i>
+        <span>LinkedIn</span>
+      </a>
+
+      <!-- GitHub Profile -->
+      <a href="https://github.com/andavarapuvinay" target="_blank" rel="noopener noreferrer" class="social-card">
+        <i data-lucide="github" style="color: #fff;"></i>
+        <span>GitHub</span>
+      </a>
+
+      <!-- CodeChef Profile -->
+      <a href="https://www.codechef.com/users/vvit24bq1a1206" target="_blank" rel="noopener noreferrer" class="social-card">
+        <i data-lucide="terminal" style="color: #f39c12;"></i>
+        <span>CodeChef</span>
+      </a>
+
+      <!-- SmartInterviews Hive Profile -->
+      <a href="https://hive.smartinterviews.in/profile/vinayandhavarapu" target="_blank" rel="noopener noreferrer" class="social-card">
+        <i data-lucide="hexagon" style="color: #06b6d4;"></i>
+        <span>Hive</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="contact-container" id="contactContainer">
+      <h2>Let's Collaborate</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Reach out directly for freelance projects or tech collaborations.</p>
+      
+      <div class="contact-links">
+        <a href="tel:8125365908" class="contact-item">
+          <i data-lucide="phone" style="color: var(--aura-cyan);"></i> +91 8125365908
+        </a>
+        <a href="mailto:andavarapu.vinay8@gmail.com" class="contact-item">
+          <i data-lucide="mail" style="color: var(--aura-purple);"></i> andavarapu.vinay8@gmail.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Andhavarapu Vinay Kumar. All rights reserved.</p>
+    <p>VVITU Guntur • 3rd Year B.Tech • IMU Alumni</p>
+  </footer>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // GSAP ScrollTrigger Setup
+    gsap.registerPlugin(ScrollTrigger);
+
+    // 1. Interactive Aura Mouse Follower
+    const aura = document.getElementById('aura');
+    window.addEventListener('mousemove', (e) => {
+      gsap.to(aura, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+    });
+
+    // 2. Initial Hero Entrance Animation
+    const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1 } });
+
+    tl.to("#navbar", { opacity: 1, y: 0, duration: 0.6 })
+      .to("#heroImage", { opacity: 1, scale: 1, duration: 0.8 }, "-=0.2")
+      .to("#heroBadge", { opacity: 1, y: 0 }, "-=0.6")
+      .to("#heroTitle", { opacity: 1, y: 0 }, "-=0.6")
+      .to("#heroSub", { opacity: 1, y: 0 }, "-=0.6")
+      .to("#heroBtn", { opacity: 1, y: 0 }, "-=0.6");
+
+    // 3. IMU Achievements Entrance
+    gsap.to(".imu-award-card, #achievements .card", {
+      scrollTrigger: {
+        trigger: "#achievements",
+        start: "top 80%",
+      },
+      opacity: 1,
+      y: 0,
+      stagger: 0.2,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+
+    // 4. Staggered Scroll Animations for Skills
+    gsap.to("#skills .card", {
+      scrollTrigger: {
+        trigger: "#skills",
+        start: "top 80%",
+      },
+      opacity: 1,
+      y: 0,
+      stagger: 0.2,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+    
+    // 5. Story Paragraphs Animation
+    gsap.to("#storyContent p", {
+      scrollTrigger: {
+        trigger: "#storyContent",
+        start: "top 80%",
+      },
+      opacity: 1,
+      y: 0,
+      stagger: 0.2,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+
+    // 6. Staggered Animation for Social Links
+    gsap.to(".social-card", {
+      scrollTrigger: {
+        trigger: "#profiles",
+        start: "top 80%",
+      },
+      opacity: 1,
+      y: 0,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power3.out"
+    });
+
+    // 7. Contact Section Reveal
+    gsap.to("#contactContainer", {
+      scrollTrigger: {
+        trigger: "#contact",
+        start: "top 85%",
+      },
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power3.out"
+    });
+  </script>
+</body>
+</html>
